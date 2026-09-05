@@ -1,6 +1,6 @@
 # Discord Arcade Bot
 
-A Discord bot with `/arcade tictactoe` challenges and interactive game boards.
+A Discord bot with challenges and interactive game boards.
 Requires Python 3.10 or newer; locally tested with Python 3.14.
 
 ## Setup (Windows PowerShell)
@@ -32,7 +32,7 @@ other scope; remove obsolete registrations separately if switching scopes.
 ## Running in VS Code on Windows
 
 Open this project folder in VS Code after creating `.venv` with the setup
-commands above. Choose **Run Discord bot** in Run and Debug and press F5.
+commands above. Choose Run and Debug and press F5.
 This configuration always starts `main.py` with the project interpreter.
 
 If using Code Runner's **Run Code** button, open `main.py` first. The workspace
@@ -44,9 +44,9 @@ Interpreter** and choose `.venv\Scripts\python.exe` for this project.
 
 ## Playing
 
-Run `/arcade tictactoe` and choose another server member. Only that member can
+Run `/arcade`, select a game, and choose another server member. Only that member can
 accept or decline. Accepting replaces the challenge with a board in the same
-message, with the challenger playing X first.
+message.
 
 Challenges expire after two minutes. Games expire after five minutes without
 an interaction. Finished and expired games disable their buttons and release
@@ -56,14 +56,22 @@ start a new challenge after restarting.
 ## Layout
 
 ```text
-main.py               Entry point and logging configuration
-config.py             Environment parsing and validation
-bot.py                Bot lifecycle, extensions, and command sync
-games/
-  arcade.py           Owns /arcade and registers game commands
-  tictactoe.py         Board rules and interaction views
-  connect4.py          Placeholder for a future game
-tests/                Game, configuration, and registration regression tests
+discord-arcade-bot/
+├── main.py              # Entry point and logging configuration
+├── bot.py               # GameBot, extensions, command sync
+├── config.py            # Environment loading and validation
+├── games/
+│   ├── __init__.py
+│   ├── arcade.py        # Owns /arcade and registers game commands
+│   ├── tictactoe.py     # Tic-tac-toe state and UI
+|   ├── minesweeper.py   # Currently empty; implement when needed
+|   ├── battleship.py    # Currently empty; implement when needed
+│   └── connect4.py      # Currently empty; implement when needed
+├── tests/
+│   └── ...              # Unit tests for games, config, and registration
+├── .env.example
+├── .gitignore
+└── requirements.txt
 ```
 
 Add new game commands to the `Arcade` cog in `games/arcade.py`, keeping their
