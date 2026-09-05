@@ -66,7 +66,8 @@ discord-arcade-bot/
 │   ├── tictactoe.py     # Tic-tac-toe state and UI
 |   ├── minesweeper.py   # Currently empty; implement when needed
 |   ├── battleship.py    # Currently empty; implement when needed
-│   └── connect4.py      # Currently empty; implement when needed
+│   ├── connect4.py      # Connect 4 state and UI
+│   └── views.py         # Shared challenge and timeout handling
 ├── tests/
 │   └── ...              # Unit tests for games, config, and registration
 ├── .env.example
@@ -90,3 +91,5 @@ Logs go to the console and `discord.log`. The file rotates at approximately
 Tests run without a bot token or live Discord requests. They cover all 5,478
 reachable tic-tac-toe boards, competing button clicks, finished games, timeouts,
 failed message edits, configuration validation, and guild/global registration.
+Connect 4 tests cover all 69 winning lines for both colors, gravity, full columns,
+draws, player permissions, overlapping moves, and challenge/game cleanup.

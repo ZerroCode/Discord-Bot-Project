@@ -6,7 +6,9 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from games.tictactoe import ChallengeView
+from games.tictactoe import ChallengeView as TicTacToeChallengeView
+from games.connect4 import ChallengeView as Connect4ChallengeView
+from games.views import ChallengeView as BaseChallengeView
 
 if TYPE_CHECKING:
     from bot import GameBot
@@ -16,6 +18,16 @@ if TYPE_CHECKING:
 class Arcade(commands.GroupCog, group_name="arcade", group_description="Arcade games"):
     @app_commands.command(description="Challenge another member to tic-tac-toe.")
     async def tictactoe(self, interaction: discord.Interaction, opponent: discord.Member) -> None:
+        await self._challenge(interaction, opponent, TicTacToeChallengeView, "Tic Tac Toe")
+
+    @app_commands.command(description="Challenge another member to Connect 4.")
+    async def connect4(self, interaction: discord.Interaction, opponent: discord.Member) -> None:
+        await self._challenge(interaction, opponent, Connect4ChallengeView, "Connect 4")
+
+    async def _challenge(
+        self, interaction: discord.Interaction, opponent: discord.Member,
+        view_type: type[BaseChallengeView], game_name: str,
+    ) -> None:
         if interaction.guild is None or not isinstance(interaction.user, discord.Member):
             await interaction.response.send_message("Start games in a server.", ephemeral=True)
             return
@@ -26,10 +38,10 @@ class Arcade(commands.GroupCog, group_name="arcade", group_description="Arcade g
             await interaction.response.send_message("You can't challenge yourself.", ephemeral=True)
             return
 
-        view = ChallengeView(interaction.user, opponent)
+        view = view_type(interaction.user, opponent)
         embed = discord.Embed(
-            title="Tic Tac Toe Challenge",
-            description=f"{interaction.user.mention} has challenged {opponent.mention} to Tic Tac Toe.",
+            title=f"{game_name} Challenge",
+            description=f"{interaction.user.mention} has challenged {opponent.mention} to {game_name}.",
             color=discord.Color.blurple(),
         )
         embed.set_footer(text="Challenge expires after 2 minutes.")

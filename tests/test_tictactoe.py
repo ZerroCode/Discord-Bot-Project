@@ -169,6 +169,10 @@ class ViewTests(unittest.IsolatedAsyncioTestCase):
             self.assertTrue(view.is_finished())
             self.assertTrue(all(button.disabled for button in view.children))
             view.message.edit.assert_awaited_once()
+            self.assertEqual(
+                view.message.edit.call_args.kwargs["embed"].description,
+                "Start a new game with /arcade tictactoe.",
+            )
             event = interaction(self.p2 if isinstance(view, ChallengeView) else self.p1)
             if isinstance(view, ChallengeView):
                 await view.accept.callback(event)
