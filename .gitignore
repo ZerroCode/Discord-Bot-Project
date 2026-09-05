@@ -1,4 +1,4 @@
 .env
-discord.log
-__pycache__
-games/__pycache__
+discord.log*
+__pycache__/
+.venv/
